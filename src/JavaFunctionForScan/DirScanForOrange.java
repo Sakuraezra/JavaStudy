@@ -1,21 +1,26 @@
-package JavaFunction;
+package JavaFunctionForScan;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.*;
 
 /**
  * @ author ezra
  * @ date 2019/3/13 15:41
  */
-public class DirScan {
+
+public class DirScanForOrange {
 
 	private static ArrayList<Object> scanFiles = new ArrayList<Object>();
 
-	/** linkedList实现 **/
+	/**
+	 * linkedList实现
+	 **/
 	private static LinkedList<File> queueFiles = new LinkedList<File>();
 
 	public static void orderByDate(String filePath) {
@@ -97,17 +102,13 @@ public class DirScan {
 	 * @time 2017年11月3日
 	 */
 	/**
-	 *
 	 * TODO:非递归方式扫描指定文件夹下面的所有文件并写入sql脚本
 	 *
-	 * @return ArrayList<Object>
 	 * @param folderPath 需要进行文件扫描的文件夹路径
+	 * @return ArrayList<Object>
 	 * @author ezra
 	 * @time 2019年1月18日
 	 */
-
-
-
 
 
 	public static ArrayList<Object> scanFilesWithNoRecursion(String folderPath) throws Exception {
@@ -137,101 +138,79 @@ public class DirScan {
 				File headDirectory = queueFiles.removeFirst();
 				File[] currentFiles = headDirectory.listFiles();
 				String model = null;
+				// 如果仍然是文件夹，将其放入linkedList中
+				File[] filelists = currentFiles;
+				// System.out.println(Arrays.toString(filelists));
+				Date date = new Date();
+				String[] path = filelists[0].getAbsolutePath().split("\\\\");
+				String[] typecontent = null;
+				String wikiTitle = path[2];
+				String type = "";
+				String wikiImage = "";
+				String wikiVideo = "";
+				StringBuilder wikiContent = null;
+				int addTime = (int) ((new Date().getTime() / 1000));
+				// 对图片进行处理
+				for (int i = 0; i < filelists.length; i++) {
+					// System.out.println(path.indexOf("\\"));
+					type = filelists[i].toString().substring(filelists[i].toString().lastIndexOf(".") + 1);
+					if (type.equals("jpg") || type.equals("png")) {
+						// String path1 = "d:/old/1.mp4";
+						// File oldName = new File(path1);
+						String name = "" + Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(date))
+								+ index++;
+						String path2 = "d:/new/" + name + '.' + type;
+						File newName = new File(path2);
+						Files.copy(filelists[i].toPath(), newName.toPath());
+						// typecontent = filelists[i].getAbsolutePath().split("\\\\");
+						wikiImage = wikiImage + "files/wiki_datas/20190401/" + name + '.' + type + ";";
+					}
 
-				for (int j = 0; j < currentFiles.length; j++) {
-					if (currentFiles[j].isDirectory()) {
-						// 如果仍然是文件夹，将其放入linkedList中
-						File[] filelists = currentFiles[j].listFiles();
-						// System.out.println(Arrays.toString(filelists));
-						Date date = new Date();
-						String[] path = filelists[0].getAbsolutePath().split("\\\\");
-						String[] typecontent = null;
-						String wikiTitle = path[3];
-						String type = "";
-						String wikiImage = "";
-						String wikiVideo = "";
-						StringBuilder wikiContent = null;
-						int addTime = (int) ((new Date().getTime() / 1000));
-						// 对图片进行处理
-						for (int i = 0; i < filelists.length; i++) {
-							// System.out.println(path.indexOf("\\"));
-							type = filelists[i].toString().substring(filelists[i].toString().lastIndexOf(".") + 1);
-							if (type.equals("jpg") || type.equals("png")) {
-								// String path1 = "d:/old/1.mp4";
-								// File oldName = new File(path1);
-								String name = "" + Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(date))
-										+ index++;
-								String path2 = "d:/new/" + name + '.' + type;
-								File newName = new File(path2);
-								Files.copy(filelists[i].toPath(), newName.toPath());
-								// typecontent = filelists[i].getAbsolutePath().split("\\\\");
-								wikiImage = wikiImage + "/files/wiki_datas/" + name + '.' + type + ";";
-							}
+					if (type.equals("mp4")) {
+						String name = "" + Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(date))
+								+ index++;
+						String path2 = "d:/new/" + name + '.' + type;
+						File newName = new File(path2);
+						Files.copy(filelists[i].toPath(), newName.toPath());
+						typecontent = filelists[i].getAbsolutePath().split("\\\\");
+						wikiVideo = wikiVideo + "files/wiki_datas/20190401/" + name + '.' + type + ";";
+					}
 
-							if (type.equals("mp4")) {
-								String name = "" + Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(date))
-										+ index++;
-								String path2 = "d:/new/" + name + '.' + type;
-								File newName = new File(path2);
-								Files.copy(filelists[i].toPath(), newName.toPath());
-								typecontent = filelists[i].getAbsolutePath().split("\\\\");
-								wikiVideo = wikiVideo + "/files/wiki_datas/" + name + '.' + type + ";";
-							}
-
-							if (type.equals("txt")) {
-								StringBuilder content = new StringBuilder();
-								// 对txt文件进行处理。读取txt文件 ansi转utf-8
-								InputStreamReader read = new InputStreamReader(new FileInputStream(filelists[0]),
-										"GBK");
-								BufferedReader br = new BufferedReader((read));
-								String s = null;
-								while ((s = br.readLine()) != null) {// 使用readLine方法，一次读一行
-									// content.append(System.lineSeparator() + s);
-									content.append(s);
-									// System.out.println(s);
-								}
-								br.close();
-								read.close();
-								wikiContent = content;
-							}
-
+					if (type.equals("txt")) {
+						StringBuilder content = new StringBuilder();
+						// 对txt文件进行处理。读取txt文件 ansi转utf-8
+						InputStreamReader read = new InputStreamReader(new FileInputStream(filelists[i]),
+								"UTF-8");
+						BufferedReader br = new BufferedReader((read));
+						String s = null;
+						while ((s = br.readLine()) != null) {// 使用readLine方法，一次读一行
+							// content.append(System.lineSeparator() + s);
+							content.append(s);
+							// System.out.println(s);
 						}
-						model = "insert into sense_agro_wiki values(" + "'" + path[2] + "','" + wikiTitle + "','"
-								+ wikiVideo + "','" + wikiImage + "','" + wikiContent + "'," + addTime + "," + 0 + ","
-								+ 0 + "," + 0 + ",''" + ",''" + "" + "," + 0 + "," + 1 + ");";
+						br.close();
+						read.close();
+						wikiContent = content;
+					}
 
-						System.out.println(model);
-						FileOutputStream fos =null;
-						File file = new File("d:/old/sql201903131548.sql");
-						if (!file.exists()) {
-							file.createNewFile();
-							fos = new FileOutputStream(file);
-						}
-						fos = new FileOutputStream(file,true);
-						OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");//指定以UTF-8格式写入文件
-						osw.write(model);
-						osw.write("\r\n");
-						osw.close();
-						// if file doesnt exists, then create it
-
-						// System.out.println(Arrays.toString(filelists));
-						// queueFiles.add(currentFiles[j]);
-
-					} /*
-					 * else { File[] filelists = headDirectory.listFiles(); for(int
-					 * i=0;i<filelists.length;i++) { String[] path =
-					 * filelists[i].getAbsolutePath().split("\\\\"); //
-					 * System.out.println(path.indexOf("\\")); String model =
-					 * "insert into sense_agro_wiki values(" + "'" + path[2] + "','" + path[3] +
-					 * "','" +"/static/files/"+path[4] +"')"; System.out.println(model);
-					 * System.out.println(Arrays.toString(filelists)); }
-					 *
-					 * scanFiles.add(currentFiles[j].getAbsolutePath());
-					 *
-					 * }
-					 */
 				}
 
+		//		model = " UPDATE sense_agro_wiki SET wiki_content = '" +wikiContent +"'where wiki_title = '"+wikiTitle+"';";
+
+				model = "insert into sense_agro_wiki (wiki_title,wiki_image,wiki_content,add_time,crop_id) values(" + "'" + wikiTitle + "','" + wikiImage + "','" + wikiContent + "'," + addTime + "," + 1 + ");";
+
+				System.out.println(model);
+				FileOutputStream fos = null;
+				File file = new File("d:/old/insertOrange20190401.sql");
+				if (!file.exists()) {
+					file.createNewFile();
+					fos = new FileOutputStream(file);
+				}
+				fos = new FileOutputStream(file, true);
+				OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");//指定以UTF-8格式写入文件
+				osw.write(model);
+				osw.write("\r\n");
+				osw.close();
 			}
 		}
 
@@ -239,10 +218,10 @@ public class DirScan {
 	}
 
 	public static void main(String[] args) throws Exception {
-		DirScan scanDir = new DirScan();
-		String path = "d:/杂草百科二期";
+		DirScanForOrange scanDir = new DirScanForOrange();
+		String path = "d:/柑橘百科定稿新增117";
 		scanDir.scanFilesWithNoRecursion(path);
-// 		scanDir.orderByDate(path);
+		// scanDir.orderByDate(path);
 
 //		BufferedReader bre = null;
 //		try {
