@@ -6,10 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Spider" />
+        <module name="javaspider" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="javaspider" target="1.5" />
       <module name="Spider" target="1.5" />
     </bytecodeTargetLevel>
   </component>
