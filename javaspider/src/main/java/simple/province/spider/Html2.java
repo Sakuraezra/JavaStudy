@@ -1,4 +1,4 @@
-package spider;
+package simple.province.spider;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
