@@ -1,7 +1,10 @@
 package JavaFunctionForScan.TranslateEncoding;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -57,50 +60,54 @@ public class TranslateCodingForWeed {
 					scanFiles.add(files[i].getAbsolutePath());
 				}
 			}
-			// 如果linkedList非空遍历linkedList
+
 			while (!queueFiles.isEmpty()) {
 				// 移出linkedList中的第一个
 				File headDirectory = queueFiles.removeFirst();
 				File[] currentFiles = headDirectory.listFiles();
-				String model = null;
-				// 如果仍然是文件夹，将其放入linkedList中
-				File[] filelists = currentFiles;
-				String[] path = filelists[0].getAbsolutePath().split("\\\\");
-				String filename = path[2];
-				String type = "";
 
-				// 对图片进行处理
-				for (int i = 0; i < filelists.length; i++) {
-					// System.out.println(path.indexOf("\\"));
-					type = filelists[i].toString().substring(filelists[i].toString().lastIndexOf(".") + 1);
-					if (type.equals("txt")) {
-						StringBuilder content = new StringBuilder();
-						// 对txt文件进行处理。读取txt文件 ans
-						// i转utf-8
-						InputStreamReader read = new InputStreamReader(new FileInputStream(filelists[i]),
-								"GBK");
-						File file = new File("d:/script/txt1/" + filename+ ".txt");
-						OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(file), "UTF-8"); //存为UTF-8
-						int len = read.read();
-						while (-1 != len) {
-							osw.write(len);
-							len = read.read();
+				for (int j = 0; j < currentFiles.length; j++) {
+					if (currentFiles[j].isDirectory()) {
+						// 如果仍然是文件夹，将其放入linkedList中
+						File[] filelists = currentFiles[j].listFiles();
+						// System.out.println(Arrays.toString(filelists));
+						Date date = new Date();
+						String[] path = filelists[0].getAbsolutePath().split("\\\\");
+						String filename = path[3];
+						String type = "";
+						// 对图片进行处理
+						for (int i = 0; i < filelists.length; i++) {
+							// System.out.println(path.indexOf("\\"));
+							type = filelists[i].toString().substring(filelists[i].toString().lastIndexOf(".") + 1);
+							if (type.equals("txt")) {
+								StringBuilder content = new StringBuilder();
+								// 对txt文件进行处理。读取txt文件 ans
+								// i转utf-8
+								InputStreamReader read = new InputStreamReader(new FileInputStream(filelists[i]),
+										"GBK");
+								File file = new File("d:/script/txt/杂草百科test/" + filename + ".txt");
+								OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(file), "UTF-8"); //存为UTF-8
+								int len = read.read();
+								while (-1 != len) {
+									osw.write(len);
+									len = read.read();
+								}
+								//刷新缓冲区的数据，强制写入目标文件
+								osw.flush();
+								osw.close();
+								read.close();
+							}
 						}
-						//刷新缓冲区的数据，强制写入目标文件
-						osw.flush();
-						osw.close();
-						read.close();
 					}
 				}
 			}
 		}
-
 		return scanFiles;
 	}
 
 	public static void main(String[] args) throws Exception {
 		TranslateCodingForWeed translateCoding = new TranslateCodingForWeed();
-		String path = "d:/第一批英文柑橘百科--部署上线--77个";
+		String path = "d:/第一批92种完整杂草英文百科--有水印--部署上线";
 		translateCoding.scanFilesWithNoRecursion(path);
 
 

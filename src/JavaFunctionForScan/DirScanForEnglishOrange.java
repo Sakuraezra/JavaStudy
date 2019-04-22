@@ -171,7 +171,7 @@ public class DirScanForEnglishOrange {
 				wikiTitleEng = part[1];
 
 
-				model = " UPDATE sense_agro_wiki SET wiki_content_en = \"" + wikiContentEng + "\"and wiki_title_en = \"" + wikiTitleEng + "\"where wiki_title = \"" +wikiTitle +"\";";
+				model = " UPDATE sense_agro_wiki SET wiki_content_en = \"" + wikiContentEng + "\",wiki_title_en = \"" + wikiTitleEng + "\"where wiki_title = \"" +wikiTitle +"\";";
 
 
 				System.out.println(model);

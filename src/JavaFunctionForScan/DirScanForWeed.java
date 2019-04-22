@@ -289,7 +289,7 @@ public class DirScanForWeed {
 
 						System.out.println(model);
 						FileOutputStream fos = null;
-						File file = new File("d:/old/weedScan20190329.sql");
+						File file = new File("d:/script/test.sql");
 						if (!file.exists()) {
 							file.createNewFile();
 							fos = new FileOutputStream(file);
