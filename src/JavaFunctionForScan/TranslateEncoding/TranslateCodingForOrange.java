@@ -76,9 +76,14 @@ public class TranslateCodingForOrange {
 						StringBuilder content = new StringBuilder();
 						// 对txt文件进行处理。读取txt文件 ans
 						// i转utf-8
-						InputStreamReader read = new InputStreamReader(new FileInputStream(filelists[i]),
-								"UTF-8");
-						File file = new File("d:/script/txt1/" + filename+ ".txt");
+
+						//转码模块
+
+
+						InputStreamReader read = new InputStreamReader(new FileInputStream(filelists[i]), "gbk");
+
+
+						File file = new File("d:/script/txt1/" + filename + ".txt");
 						String readEncoding = read.getEncoding();
 						System.out.println(readEncoding);
 						OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(file), "UTF-8"); //存为UTF-8
@@ -87,7 +92,7 @@ public class TranslateCodingForOrange {
 							osw.write(len);
 							len = read.read();
 						}
-					//刷新缓冲区的数据，强制写入目标文件
+						//刷新缓冲区的数据，强制写入目标文件
 						osw.flush();
 						osw.close();
 						read.close();
@@ -106,6 +111,5 @@ public class TranslateCodingForOrange {
 
 
 	}
-
 
 }

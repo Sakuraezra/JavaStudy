@@ -1,6 +1,9 @@
 package JavaFunctionForScan;
 
+import JavaFunctionForScan.Utils.CodeUtil;
+
 import javax.imageio.ImageIO;
+import javax.rmi.CORBA.Util;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
@@ -108,7 +111,7 @@ public class DirScanForWeed {
 	 */
 
 
-	public static ArrayList<Object> scanFilesWithNoRecursion(String folderPath) throws Exception {
+	public ArrayList<Object> scanFilesWithNoRecursion(String folderPath) throws Exception {
 		File directory = new File(folderPath);
 		int index = 0;
 		if (!directory.isDirectory()) {
@@ -161,11 +164,11 @@ public class DirScanForWeed {
 								// File oldName = new File(path1);
 								String name = "" + Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(date))
 										+ index++;
-								String path2 = "d:/new/" + name + '.' + type;
+								String path2 = "d:/script/images20190425_1000/" + name + '.' + type;
 								File newName = new File(path2);
 								Files.copy(filelists[i].toPath(), newName.toPath());
 								// typecontent = filelists[i].getAbsolutePath().split("\\\\");
-								wikiImage = wikiImage + "files/wiki_datas/20190329/" + name + '.' + type + ";";
+								wikiImage = wikiImage + "files/wiki_datas/20190425/" + name + '.' + type + ";";
 							}
 
 							if (type.equals("mp4")) {
@@ -175,14 +178,16 @@ public class DirScanForWeed {
 								File newName = new File(path2);
 								Files.copy(filelists[i].toPath(), newName.toPath());
 								typecontent = filelists[i].getAbsolutePath().split("\\\\");
-								wikiVideo = wikiVideo + "files/wiki_datas/20190329" + name + '.' + type + ";";
+								wikiVideo = wikiVideo + "files/wiki_datas/20190425/" + name + '.' + type + ";";
 							}
 
 							if (type.equals("txt")) {
 								StringBuilder content = new StringBuilder();
 								// 对txt文件进行处理。读取txt文件 ansi转utf-8
+
+								String code = CodeUtil.getCode(filelists[i]);
 								InputStreamReader read = new InputStreamReader(new FileInputStream(filelists[i]),
-										"GBK");
+										code);
 								BufferedReader br = new BufferedReader((read));
 								String s = null;
 								while ((s = br.readLine()) != null) {// 使用readLine方法，一次读一行
@@ -197,11 +202,11 @@ public class DirScanForWeed {
 						}
 
 						model = "insert into sense_agro_wiki (wiki_title,wiki_video,wiki_image,wiki_content,add_time,crop_id,crop_2_id)SELECT'" + wikiTitle + "','"
-								+ wikiVideo + "','" + wikiImage + "','" + wikiContent + "'," + addTime + "," + 2 + ",crop_id from sense_agro_crops where crop_name ='" + wikiParent + "';";
+								+ wikiVideo + "','" + wikiImage + "',\"" + wikiContent + "\"," + addTime + "," + 2 + ",crop_id from sense_agro_crops where crop_name ='" + wikiParent + "';";
 
 						System.out.println(model);
 						FileOutputStream fos = null;
-						File file = new File("d:/old/weedScan20190329.sql");
+						File file = new File("d:/script/weedScan20190425_1000.sql");
 						if (!file.exists()) {
 							file.createNewFile();
 							fos = new FileOutputStream(file);
@@ -314,8 +319,8 @@ public class DirScanForWeed {
 
 	public static void main(String[] args) throws Exception {
 		DirScanForWeed scanDir = new DirScanForWeed();
-		String path = "d:/20190329_92";
-		scanDir.updateWikiImageWithNoRecursion(path);
+		String path = "d:/杂草汇总";
+		scanDir.scanFilesWithNoRecursion(path);
 // 		scanDir.orderByDate(path);
 
 //		BufferedReader bre = null;
@@ -362,4 +367,27 @@ public class DirScanForWeed {
 		}
 		return flag;
 	}
+
+
+
+	public static String toHex(byte[] byteArray) {
+		int i;
+		StringBuffer buf = new StringBuffer("");
+		int len = byteArray.length;
+
+		for (int offset = 0; offset < len; offset++) {
+
+			i = byteArray[offset];
+
+			if (i < 0)
+				i += 256;
+			if (i < 16)
+				buf.append("0");
+
+			buf.append(Integer.toHexString(i));
+		}
+
+		return buf.toString().toUpperCase();
+	}
+
 }

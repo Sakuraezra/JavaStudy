@@ -59,13 +59,13 @@ public class DirScanForEnglishFamily {
 				for (int i = 0; i < filelists.length; i++) {
 					type = filelists[i].toString().substring(filelists[i].toString().lastIndexOf(".") + 1);
 					if (type.equals("txt")) {
-						model = "update sense_agro_crops_copy1 set crop_name_en = " + "'" + crop_name_en +  "' where crop_name = '"+wikiTitle+"';";
+						model = "update sense_agro_crops set crop_name_en = " + "'" + crop_name_en +  "' where crop_name = '"+wikiTitle+"';";
 					}
 				}
 
 				System.out.println(model);
 				FileOutputStream fos = null;
-				File file = new File("d:/script/insertEnglishCropName.sql");
+				File file = new File("d:/script/insertEnglishCropName0425223.sql");
 				if (!file.exists()) {
 					file.createNewFile();
 					fos = new FileOutputStream(file);
@@ -85,7 +85,7 @@ public class DirScanForEnglishFamily {
 
 	public static void main(String[] args) throws Exception {
 		DirScanForEnglishFamily dirScanForEnglishWeedForSingleFolder = new DirScanForEnglishFamily();
-		String path = "d:/英文百科";
+		String path = "d:/英文简易百科 汇总";
 		dirScanForEnglishWeedForSingleFolder.scanFilesWithNoRecursion(path);
 	}
 }

@@ -37,8 +37,11 @@ public class DirScanForEnglishWeedForSingleFolder {
 			if (type.equals("txt")) {
 				StringBuilder content = new StringBuilder();
 				// 对txt文件进行处理。读取txt文件 ansi转utf-8
+
+
+
 				InputStreamReader read = new InputStreamReader(new FileInputStream(filelists[i]),
-						"UTF-8");
+						"utf-8");
 				BufferedReader br = new BufferedReader((read));
 				String s = null;
 				while ((s = br.readLine()) != null) {// 使用readLine方法，一次读一行
@@ -58,13 +61,13 @@ public class DirScanForEnglishWeedForSingleFolder {
 
 				System.out.println(model);
 				FileOutputStream fos = null;
-				File file = new File("d:/script/updateEnglishWeedWiki20190422.sql");
+				File file = new File("d:/script/updateEnglishWeedWiki20190423.sql");
 				if (!file.exists()) {
 					file.createNewFile();
 					fos = new FileOutputStream(file);
 				}
 				fos = new FileOutputStream(file, true);
-				OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF8");//指定以UTF-8格式写入文件
+				OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");//指定以UTF-8格式写入文件
 				osw.write(model);
 				osw.write("\r\n");
 				osw.close();
@@ -80,4 +83,6 @@ public class DirScanForEnglishWeedForSingleFolder {
 		String path = "d:/script/txt/杂草百科";
 		dirScanForEnglishWeedForSingleFolder.scanFilesWithNoRecursion(path);
 	}
+
+
 }
