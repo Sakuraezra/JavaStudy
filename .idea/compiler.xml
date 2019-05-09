@@ -10,8 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="javaspider" target="1.5" />
-      <module name="Spider" target="1.5" />
+      <module name="javaspider" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

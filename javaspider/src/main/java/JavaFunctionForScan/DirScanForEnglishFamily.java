@@ -1,7 +1,6 @@
 package JavaFunctionForScan;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

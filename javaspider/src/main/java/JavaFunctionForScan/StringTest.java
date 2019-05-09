@@ -2,10 +2,7 @@ package JavaFunctionForScan;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ author ezra
@@ -35,7 +32,7 @@ public class StringTest {
 	public static void StringDetail() {
 		String content = "<p><strong>[Scientific Name]</strong><br>Ranunculus chinensis Bunge<p><strong>[Commom Name]</strong><br>Hui hui suan<p><strong>[Introduction]</strong><br>Herbs perennial or annual. Flowering Apr–Sep.<p><strong>[Morphological Characteristics]</strong><br>Roots fibrous, subequally thick. Stems 10–50 cm, densely hispid, simple or branched. Basal leaves several; petiole 4–20 cm, hispid; blade ternate, ovate in outline, 4–8 × 4–10.5 cm, papery, strigose; central leaflet stalked, rhombic or broadly rhombic, 3-partite, secondary lobes rhombic-cuneate, 2- or 3-lobed; lateral leaflets smaller, shortly stalked, oblique flabellate, unequally 2-partite. Lower stem leaves similar to basal ones, upper stem leaves smaller, shortly petiolate, 3-sect. Compound monochasium terminal, 3- to several flowered; bracts leaflike. Flowers 0.7–1.2 cm in diam. Pedicel 0.5–2 cm, strigose. Receptacle densely puberulent. Sepals 5, reflexed, elliptic-ovate, 3–5 mm, abaxially strigose. Petals 5, obovate or ovate, 5–6 × 2.8–3 mm, nectary pit covered by a scale, apex rounded. Stamens numerous; anthers oblong. Aggregate fruit ovoid-cylindric or ovoid, 6–10 × 4–6 mm; carpels numerous.Achene bilaterally compressed, obliquely obovate, 2–2.5 × 1.6–2 mm, glabrous, narrowly marginate; style persistent, ca. 0.2 mm.<p><strong>[Distribution]</strong><br>Bhutan, China, N India, Japan, Kazakhstan, Korea, Mongolia, N Pakistan, Russia (Siberia), Thailand.";
 		String[] contents = content.split("<p>");
-		ArrayList<Map<String, StringBuffer>> contentlist = new ArrayList<>();
+		List<Map<String, StringBuffer>> contentlist = new ArrayList<>();
 		for (int i = 1; i < contents.length; i++) {
 			contents[i] = contents[i].trim();
 			String[] part = contents[i].split("<br>");
@@ -60,6 +57,7 @@ public class StringTest {
 
 	public static void main(String[] args) throws ParseException {
 
+		List<Integer> list = new ArrayList<>();
 		String currentMonth = 2019 + "-"+ 1 + "-1";
 		String nextMonth = 2019 + "-"+ 2 + "-1";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
