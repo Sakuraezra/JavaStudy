@@ -1,0 +1,36 @@
+#!/bin/bash
+tomcat_dir=/usr/local/tomcat-8
+target_dir=/usr/local/applet_test/target
+
+PD1=`ps -ef | grep $tomcat_dir | grep -v "grep" | awk '{print $2}'`
+#PD1=`lsof -i:8080 | awk '{print $2}'`
+for id in $PD1
+    do
+    kill -9 $id
+    echo "killed $id"
+done
+
+rm -rf $tomcat_dir/webapps/applet
+
+mv -f $tomcat_dir/webapps/applet.war $tomcat_dir/webapps/applet.war.`date +%Y%m%d%H%M%S`
+
+mv -f $target_dir/applet.war $tomcat_dir/webapps/applet.war
+
+chmod -R 777 $tomcat_dir/webapps/
+
+sleep 3
+
+sh $tomcat_dir/bin/startup.sh
+
+sleep 10
+
+PD2=`ps aux | grep $tomcat_dir | grep java | awk '{print $2}'`
+
+if [ -n $PD2 ]; then
+        echo "Restart tomcat successfully,PID is $PD2"
+        #tail -100f $tomcat_dir/logs/catalina.out.`date +%Y-%m-%d`
+        tail -500 $tomcat_dir/logs/catalina.out.`date +%Y-%m-%d`
+else
+        echo "Fail to startup tomcat"
+        exit 1
+fi
